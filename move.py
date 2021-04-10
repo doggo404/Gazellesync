@@ -17,6 +17,7 @@ import bencode
 import constants
 import html
 from html.parser import HTMLParser
+import dottorrent
 
 #sys.stdout = open('out.txt', 'w')
 
@@ -562,13 +563,10 @@ def moveAlbum(parsedArgs, a, w, source):
 	sprint("Folder", folder)
 	#raw_input()
 	
-	t = maketorrent.TorrentMetadata()
-	t.set_data_path(folder)
-	t.set_comment("Created with GazelleSync")
-	t.set_private(True)
-	t.set_trackers([[destAPI.tracker]])
-	t.set_source(source)
-	t.save("torrent/"+tpath)
+	t = dottorrent.Torrent(folder, trackers=[w.tracker], comment="Created with GazelleSync", source=source, private=True)
+	t.generate()
+	with open ("torrent/" + tpath, "wb") as f:
+		t.save(f)
 	
 	w.upload(folder, tempfolder, album, g_tags, g_wikiImage, artists, "torrent/"+tpath)
 
