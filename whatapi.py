@@ -179,13 +179,14 @@ class WhatAPI:
 		upload_headers["origin"] = url.rsplit("/", 1)[0]
 		print(album["album"])
 		r = self.session.post(url, data=data, files=files, headers=upload_headers)
-		if "torrent_comments" not in r.text:
+		if "votes" not in r.text:
 			print("upload failed.")
 			f = open("ret.html", "wb")
 			f.write(r.text.encode("utf-8"))
 			f.close()
 			return False
 		else:
+			print("Upload successful!")
 			return True
 
 	def release_url(self, group, torrent):
