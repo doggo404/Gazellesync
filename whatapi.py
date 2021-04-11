@@ -180,14 +180,12 @@ class WhatAPI:
 		print(album["album"])
 		r = self.session.post(url, data=data, files=files, headers=upload_headers)
 		if "votes" not in r.text:
-			print("upload failed.")
-			f = open("ret.html", "wb")
-			f.write(r.text.encode("utf-8"))
-			f.close()
-			return False
+		warning = re.search(r'<p style="color: red; text-align: center;">(.+?)</p>', r.text)
+		if not warning:
+			print("Upload successful")
 		else:
-			print("Upload successful!")
-			return True
+			warning_message = warning.group(1)
+			print(f"Upload failed: {warning_message}")
 
 	def release_url(self, group, torrent):
 		return self.url + "/torrents.php?id=%s&torrentid=%s#torrent%s" % (group['group']['id'], torrent['id'], torrent['id'])
