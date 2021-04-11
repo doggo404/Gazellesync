@@ -3,12 +3,7 @@ import re
 import os
 import sys
 import time
-import string
-import requests
-import subprocess
-import shutil
 import mechanicalsoup
-import html
 
 headers = {
 	'Connection': 'keep-alive',
@@ -179,7 +174,6 @@ class WhatAPI:
 		upload_headers["origin"] = url.rsplit("/", 1)[0]
 		print(album["album"])
 		r = self.session.post(url, data=data, files=files, headers=upload_headers)
-		if "votes" not in r.text:
 		warning = re.search(r'<p style="color: red; text-align: center;">(.+?)</p>', r.text)
 		if not warning:
 			print("Upload successful")
