@@ -1,11 +1,7 @@
 #!/usr/bin/env python2.7
-import re
-import os
 import json
 import time
-import requests
 import mechanicalsoup
-import html
 
 __site_url__ = "https://orpheus.network/"
 __torrent_url__ = "https://home.opsfet.ch/"

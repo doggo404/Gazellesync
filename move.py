@@ -4,8 +4,6 @@ import sys, hashlib
 import re
 import os
 import json
-import time
-import requests
 from redapi import RedApi
 from whatapi import WhatAPI
 from nwapi import NwAPI
