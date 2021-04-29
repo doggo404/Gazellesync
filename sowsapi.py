@@ -3,8 +3,8 @@ import json
 import time
 import requests
 
-__site_url__ = "https://orpheus.network/"
-__torrent_url__ = "https://home.opsfet.ch/"
+__site_url__ = "https://bemaniso.ws/"
+__torrent_url__ = "https://bemaniso.ws:34443/"
 
 headers = {
 	'Connection': 'keep-alive',
@@ -24,7 +24,7 @@ class LoginException(Exception):
 class RequestException(Exception):
 	pass
 
-class XanaxAPI:
+class SowsAPI:
 	def __init__(self, username=None, password=None, totp=None):
 		self.session = requests.Session()
 		self.session.headers.update(headers)
@@ -37,7 +37,7 @@ class XanaxAPI:
 		self.tracker = __torrent_url__ + "/"
 		self.last_request = time.time()
 		self.rate_limit = 2.0 # seconds between requests
-		self.site = "APL"
+		self.site = "SOWS"
 		self._login()
 
 	def _login(self):
@@ -73,8 +73,8 @@ class XanaxAPI:
 		self.last_request = time.time()
 		try:
 			parsed = json.loads(r.content.decode())
+			print(parsed)
 			if parsed['status'] != 'success':
-				print(parsed)
 				raise RequestException
 			return parsed['response']
 		except ValueError as e:

@@ -6,7 +6,7 @@ import os
 import json
 from redapi import RedApi
 from whatapi import WhatAPI
-from nwapi import NwAPI
+from sowsapi import SowsAPI
 from xanaxapi import XanaxAPI
 from dicapi import DicAPI
 from shutil import copyfile
@@ -149,7 +149,7 @@ compulsory = {
 trackers = {
 	"ops",
 	"red",
-	"nwcd",
+	"sows",
 	"dic",
 }
 
@@ -205,7 +205,7 @@ def parseArguments(args):
 		raise Exception('Not all arguments are present.')
 
 	if not validateTrackers(result):
-		raise Exception("Trackers can only be RED, OPS, NWCD, and DIC")
+		raise Exception("Trackers can only be RED, OPS, SOWS, and DIC")
 
 	if ("tid" in result):
 		if not int(result["tid"]):
@@ -234,9 +234,9 @@ def generateSourceTrackerAPI(tracker):
 	elif tracker == "ops":
 		print("Source tracker is OPS")
 		return XanaxAPI(username=constants.OrpheusUsername, password=constants.OrpheusPassword)
-	elif tracker == "nwcd":
-		print("Source tracker is NWCD")
-		return NwAPI(username=constants.NWCDUsername, password=constants.NWCDPassword)
+	elif tracker == "sows":
+		print("Source tracker is SOWS")
+		return SowsAPI(username=constants.SOWSUsername, password=constants.SOWSPassword)
 	elif tracker == "dic":
 		print("Source tracker is DIC")
 		return DicAPI(username=constants.DICUsername, password=constants.DICPassword)
@@ -248,9 +248,9 @@ def generateDestinationTrackerAPI(tracker):
 	elif tracker == "ops":
 		print("Destination tracker is OPS")
 		return WhatAPI(username=constants.OrpheusUsername, password=constants.OrpheusPassword, tracker = "https://home.opsfet.ch/{0}/announce", url = "https://orpheus.network/", site = "OPS")
-	elif tracker == "nwcd":
-		print("Destination tracker is NWCD")
-		return WhatAPI(username=constants.NWCDUsername, password=constants.NWCDPassword, tracker = "https://definitely.notwhat.cd:443/{0}/announce", url = "https://notwhat.cd/", site = "NWCD")
+	elif tracker == "sows":
+		print("Destination tracker is SOWS")
+		return WhatAPI(username=constants.SOWSUsername, password=constants.SOWSPassword, tracker = "https://bemaniso.ws:4443/{0}/announce", url = "https://bemaniso.ws/", site = "SOWS")
 	elif tracker == "dic":
 		print("Destination tracker is DIC")
 		return WhatAPI(username=constants.DICUsername, password=constants.DICPassword, tracker = "http://tracker.dicmusic.club:34000/{0}/announce", url = "https://dicmusic.club/", site = "DIC")
@@ -260,8 +260,8 @@ def generateSourceFlag(tracker):
 		return "RED"
 	elif tracker == "ops":
 		return "OPS"
-	elif tracker == "nwcd":
-		return "nwcd"
+	elif tracker == "sows":
+		return "sows"
 	elif tracker == "dic":
 		return "DICMusic"
 
@@ -413,7 +413,7 @@ def moveAlbum(parsedArgs, a, w, source):
 	else:
 		TorrentIDsource = parsedArgs["tid"]
 		data = a.get_torrent_info(id=TorrentIDsource)
-	
+
 	tdata = data["torrent"]
 	g_group = data["group"]
 
@@ -438,12 +438,12 @@ def moveAlbum(parsedArgs, a, w, source):
 		raise Exception("Failed to find path")
 
 	isDupe = checkForDuplicate(w, data)
-	
+
 	sprint("Duplicate:", isDupe)
 
 	if isDupe:
 		return
-	
+
 	t_media = tdata["media"]
 	t_format = tdata["format"]
 	t_encoding = tdata["encoding"]
@@ -457,7 +457,7 @@ def moveAlbum(parsedArgs, a, w, source):
 	t_remastered = tdata["remastered"]
 	t_remasterRecordLabel = tdata["remasterRecordLabel"]
 	t_remasterTitle = tdata["remasterTitle"]
-	
+
 	g_artists = g_group["musicInfo"]
 	g_name = g_group["name"]
 	g_year = g_group["year"]
@@ -465,18 +465,18 @@ def moveAlbum(parsedArgs, a, w, source):
 	g_catalogueNumber = g_group["catalogueNumber"]
 	g_releaseType = g_group["releaseType"]
 	g_tags = g_group["tags"]
-	#g_wikiImage = g_group["wikiImage"]
-	#"""
-	if parsedArgs["to"] != "nwcd":
+	g_wikiImage = g_group["wikiImage"]
+	"""
+	if parsedArgs["to"] != "sows":
 		g_wikiImage = g_group["wikiImage"]
 	else:
 		g_wikiImage = destAPI.img(g_group["wikiImage"])
-	#"""
+    """
 
 	g_wikiBody = strip_tags(g_group["wikiBody"]) #.replace("<br />", "\n")
 	#g_wikiBody = g_group["wikiBody"]
 	g_group["wikiBody"] = g_group["wikiBody"].replace("\r\n", "\n")
-	
+
 	album = dict(
 		album = g_name,
 		original_year = g_year,
@@ -494,7 +494,7 @@ def moveAlbum(parsedArgs, a, w, source):
 		description = g_wikiBody,
 		rDesc = t_description
 	)
-	
+
 	artists = list()
 	for i,v in enumerate(g_artists["composers"]):
 		artists.append((v["name"], artistImportances.get("Composer", 1)))
@@ -516,11 +516,11 @@ def moveAlbum(parsedArgs, a, w, source):
 
 	for i,v in enumerate(g_artists["producer"]):
 		artists.append((v["name"], artistImportances.get("Producer", 1)))
-	
+
 	sprint(album["album"])
-	
+
 	tempfolder = "torrent"
-	
+
 	if not os.path.exists(tempfolder):
 		os.makedirs(tempfolder)
 
@@ -532,14 +532,14 @@ def moveAlbum(parsedArgs, a, w, source):
 		releaseYear = g_year
 		releaseRecordLabel = g_recordLabel
 		releaseCatNum = g_catalogueNumber
-	
+
 	newFolderName = genaratePrettyName(g_artists, g_name, releaseYear, t_format, t_encoding, t_media, releaseRecordLabel, releaseCatNum, t_remasterTitle)
 
 	print("New path is", newFolderName)
 	#input()
-	
+
 	tpath = newFolderName +".torrent"
-	
+
 	tpath = tpath.replace("/", "／")
 	tpath = tpath.replace("\\", "＼")
 	tpath = tpath.replace(":", "：")
@@ -550,21 +550,21 @@ def moveAlbum(parsedArgs, a, w, source):
 	tpath = tpath.replace(">", "＞")
 	tpath = tpath.replace("|", "｜")
 	tpath = unescape(tpath)
-	
+
 	#tpath = "torrent/"+tpath
-	
+
 	sprint(tpath)
 	sprint("Folder", folder)
 	#folder = toUnicode(folder)
 
 	sprint("Folder", folder)
 	#raw_input()
-	
+
 	t = dottorrent.Torrent(folder, trackers=[w.tracker], comment="Created with GazelleSync", source=source, private=True)
 	t.generate()
 	with open ("torrent/" + tpath, "wb") as f:
 		t.save(f)
-	
+
 	w.upload(folder, tempfolder, album, g_tags, g_wikiImage, artists, "torrent/"+tpath)
 
 	if constants.directory != "":

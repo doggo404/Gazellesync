@@ -4,6 +4,7 @@ import os
 import sys
 import time
 import mechanicalsoup
+import requests
 
 headers = {
 	'Connection': 'keep-alive',
@@ -97,8 +98,8 @@ class RequestException(Exception):
 
 class WhatAPI:
 	def __init__(self, username=None, password=None, tracker=None, url=None, site=None):
-		self.session = mechanicalsoup.StatefulBrowser()
-		self.session.session.headers.update(headers)
+		self.session = requests.Session()
+		self.session.headers.update(headers)
 		self.username = username
 		self.password = password
 		self.authkey = None
@@ -113,18 +114,11 @@ class WhatAPI:
 
 	def _login(self, tracker):
 		'''Logs in user and gets authkey from server'''
-		if self.url == "https://orpheus.network/":
-			self.session.open('https://orpheus.network/login.php')
-			self.session.select_form()
-			self.session['username'] = self.username
-			self.session['password'] = self.password
-			self.session['keeplogged'] = '1'
-			r = self.session.submit_selected()
-		else:
-			loginpage = self.url + '/login.php'
-			data = {'username': self.username,
-					'password': self.password}
-			r = self.session.post(loginpage, data=data)
+
+		loginpage = self.url + '/login.php'
+		data = {'username': self.username,
+				'password': self.password}
+		r = self.session.post(loginpage, data=data)
 		if r.status_code != 200:
 			raise LoginException
 		try:
@@ -193,7 +187,7 @@ class WhatAPI:
 
 	def img(self, url):
 		r = self.session.put(self.url + "imgupload.php", data=url)
-		#print(r.json())
+		print(r.json())
 		return r.json()["url"]
 
 	def HTMLtoBBCODE(self, text):

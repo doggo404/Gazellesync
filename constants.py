@@ -5,8 +5,8 @@ OrpheusPassword = ""
 RedUsername = ""
 RedPassword = ""
 
-NWCDUsername = ""
-NWCDPassword = ""
+SOWSUsername = ""
+SOWSPassword = ""
 
 DICUsername = ""
 DICPassword = ""
