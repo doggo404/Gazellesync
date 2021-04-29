@@ -250,7 +250,7 @@ def generateDestinationTrackerAPI(tracker):
 		return WhatAPI(username=constants.OrpheusUsername, password=constants.OrpheusPassword, tracker = "https://home.opsfet.ch/{0}/announce", url = "https://orpheus.network/", site = "OPS")
 	elif tracker == "sows":
 		print("Destination tracker is SOWS")
-		return WhatAPI(username=constants.SOWSUsername, password=constants.SOWSPassword, tracker = "https://bemaniso.ws:4443/{0}/announce", url = "https://bemaniso.ws/", site = "SOWS")
+		return WhatAPI(username=constants.SOWSUsername, password=constants.SOWSPassword, tracker = "https://bemaniso.ws:34443/{0}/announce", url = "https://bemaniso.ws/", site = "SOWS")
 	elif tracker == "dic":
 		print("Destination tracker is DIC")
 		return WhatAPI(username=constants.DICUsername, password=constants.DICPassword, tracker = "http://tracker.dicmusic.club:34000/{0}/announce", url = "https://dicmusic.club/", site = "DIC")
