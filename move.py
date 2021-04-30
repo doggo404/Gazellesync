@@ -448,7 +448,7 @@ def moveAlbum(parsedArgs, a, w, source):
 	t_format = tdata["format"]
 	t_encoding = tdata["encoding"]
 	if tdata["description"] == "":
-		t_description = "Uploaded with ]url=https://github.com/doggo404/Gazellesync]GazelleSync[/url] ("+parsedArgs["from"].upper()+" to "+parsedArgs["to"].upper()+"). Many thanks to the original uploader!"
+		t_description = "Uploaded with [url=https://github.com/doggo404/Gazellesync]GazelleSync[/url] ("+parsedArgs["from"].upper()+" to "+parsedArgs["to"].upper()+"). Many thanks to the original uploader!"
 	else:
 		t_description = "Content of the original Description field at " + parsedArgs["from"].upper() + " (it may be empty) : [quote]" + tdata["description"] + "[/quote]" +  "\n\nUploaded with [url=https://github.com/doggo404/Gazellesync]GazelleSync[/url] ("+parsedArgs["from"].upper()+" to "+parsedArgs["to"].upper()+"). Many thanks to the original uploader!"
 
