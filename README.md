@@ -25,7 +25,7 @@ to: tracker the torrent will be moved to (Possible values: ops or red or dic or 
 from: tracker the torrent comes from (Possible values: ops or red or dic or nwcd )
 
 IF I want to point to the exact folder of the album
-  album: the folder of the album (examples : “C:\Albums\Roger Molls - Melography – 2019 [FLAC]”, “~/Albums/Roger Molls - Melography – 2019 [FLAC]”
+  album: the folder of the album (examples : “C:\Albums\Roger Molls - Melography – 2019 [FLAC]”, “/Albums/Roger Molls - Melography – 2019 [FLAC]”
 ELSE
   folder: the folder that contains all albums. The album folder(s) will be extracted from the site metadata (ex: “C:\Albums\”, “~/Albums/”)
 END
