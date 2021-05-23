@@ -8,7 +8,7 @@ It has a GUI, but it can also be used by command line.
 python 3.6 or above.
 
  (use pip install MUDULENAME)
- `mechanize`
+ ``mechanize``
  
  `requests`
  
