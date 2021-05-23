@@ -21,8 +21,9 @@ Currently incompatible with RED's 2FA.
 # Command line usage
 
 Obligatory arguments:
-`to: tracker the torrent will be moved to (Possible values: ops or red or dic or nwcd )
-from: tracker the torrent comes from (Possible values: ops or red or dic or nwcd )`
+`to: tracker the torrent will be moved to (Possible values: ops or red or dic or nwcd )`
+
+`from: tracker the torrent comes from (Possible values: ops or red or dic or nwcd )`
 
 IF I want to point to the exact folder of the album
  ` album: the folder of the album (examples : “C:\Albums\Roger Molls - Melography – 2019 [FLAC]”, “/Albums/Roger Molls - Melography – 2019 [FLAC]”`
