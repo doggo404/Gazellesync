@@ -14,7 +14,7 @@ python 3.6 or above.
  
 - `pysimplegui`
 
-# current bugs/issues
+# Current bugs/issues
 
 OPS -> RED doesn't work if the OPS torrent is set to "Original Release".
 Any .log that's not a rip log is a problem. (0% log on destination tracker)
